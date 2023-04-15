@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/drone_interface_demo2/static/css/main.585cd855.css",
-    "main.js": "/drone_interface_demo2/static/js/main.54fda35d.js",
-    "static/js/787.1b991c3f.chunk.js": "/drone_interface_demo2/static/js/787.1b991c3f.chunk.js",
-    "static/media/speed.png": "/drone_interface_demo2/static/media/speed.9f4df3dc66eb7a8d5017.png",
-    "static/media/no_fly.png": "/drone_interface_demo2/static/media/no_fly.22ea68d3567cefe6bfd5.png",
-    "static/media/rotor.png": "/drone_interface_demo2/static/media/rotor.6ce53c980b105b5628af.png",
-    "static/media/extreme_weather.png": "/drone_interface_demo2/static/media/extreme_weather.447e1646dbbf3a9d672c.png",
-    "static/media/snow.png": "/drone_interface_demo2/static/media/snow.bc70fc9aadc786e4efc8.png",
-    "static/media/elapsed.png": "/drone_interface_demo2/static/media/elapsed.70e67624c0ce153befcd.png",
-    "static/media/fly.png": "/drone_interface_demo2/static/media/fly.8d4cbbf1fe60a87062f3.png",
-    "static/media/rain.png": "/drone_interface_demo2/static/media/rain.7aaa93f93347ec18c69c.png",
-    "index.html": "/drone_interface_demo2/index.html",
-    "main.585cd855.css.map": "/drone_interface_demo2/static/css/main.585cd855.css.map",
-    "main.54fda35d.js.map": "/drone_interface_demo2/static/js/main.54fda35d.js.map",
-    "787.1b991c3f.chunk.js.map": "/drone_interface_demo2/static/js/787.1b991c3f.chunk.js.map"
+    "main.css": "/drone_interface_demo3/static/css/main.b125ce68.css",
+    "main.js": "/drone_interface_demo3/static/js/main.739b74b0.js",
+    "static/js/787.fc5d6e22.chunk.js": "/drone_interface_demo3/static/js/787.fc5d6e22.chunk.js",
+    "static/media/speed.png": "/drone_interface_demo3/static/media/speed.9f4df3dc66eb7a8d5017.png",
+    "static/media/no_fly.png": "/drone_interface_demo3/static/media/no_fly.22ea68d3567cefe6bfd5.png",
+    "static/media/rotor.png": "/drone_interface_demo3/static/media/rotor.6ce53c980b105b5628af.png",
+    "static/media/extreme_weather.png": "/drone_interface_demo3/static/media/extreme_weather.447e1646dbbf3a9d672c.png",
+    "static/media/snow.png": "/drone_interface_demo3/static/media/snow.bc70fc9aadc786e4efc8.png",
+    "static/media/elapsed.png": "/drone_interface_demo3/static/media/elapsed.70e67624c0ce153befcd.png",
+    "static/media/fly.png": "/drone_interface_demo3/static/media/fly.8d4cbbf1fe60a87062f3.png",
+    "static/media/rain.png": "/drone_interface_demo3/static/media/rain.7aaa93f93347ec18c69c.png",
+    "index.html": "/drone_interface_demo3/index.html",
+    "main.b125ce68.css.map": "/drone_interface_demo3/static/css/main.b125ce68.css.map",
+    "main.739b74b0.js.map": "/drone_interface_demo3/static/js/main.739b74b0.js.map",
+    "787.fc5d6e22.chunk.js.map": "/drone_interface_demo3/static/js/787.fc5d6e22.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.585cd855.css",
-    "static/js/main.54fda35d.js"
+    "static/css/main.b125ce68.css",
+    "static/js/main.739b74b0.js"
   ]
 }
