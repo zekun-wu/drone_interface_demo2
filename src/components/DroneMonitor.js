@@ -38,8 +38,6 @@ const DroneMonitor = ({ identifier, scene, highlight, droneDataFiles }) => {
       }, {});
 
       setDroneData(dataObj);
-      console.log("Drone data loaded: ", dataObj);
-
     };
 
     fetchData();
