@@ -2,9 +2,9 @@ import React, { useState, useEffect, useMemo } from 'react';
 import DroneBlock from './DroneBlock';
 import './DroneMonitor.css';
 
-const DroneMonitor = ({ identifier, scene, highlight, droneDataFiles }) => {
+const DroneMonitor = ({ identifier, scene, highlight, droneDataFiles, droneData }) => {
 
-  const [droneData, setDroneData] = useState({});
+  // const [droneData, setDroneData] = useState({});
   const droneBlocks = new Array(6).fill(null);
 
   // const normalSceneFiles = [];
@@ -26,22 +26,22 @@ const DroneMonitor = ({ identifier, scene, highlight, droneDataFiles }) => {
 
   // const droneDataFiles = droneFiles.map((file) => file.data);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const dataPromises = droneDataFiles.map((dataFile) =>
-        fetch(dataFile).then((response) => response.json()));
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const dataPromises = droneDataFiles.map((dataFile) =>
+  //       fetch(dataFile).then((response) => response.json()));
 
-      const dataResults = await Promise.allSettled(dataPromises);
-      const dataObj = dataResults.reduce((obj, data, index) => {
-        obj[index + 1] = data;
-        return obj;
-      }, {});
+  //     const dataResults = await Promise.allSettled(dataPromises);
+  //     const dataObj = dataResults.reduce((obj, data, index) => {
+  //       obj[index + 1] = data;
+  //       return obj;
+  //     }, {});
 
-      setDroneData(dataObj);
-    };
+  //     setDroneData(dataObj);
+  //   };
 
-    fetchData();
-  }, [droneDataFiles]);
+  //   fetchData();
+  // }, [droneDataFiles]);
 
   const droneNumberDataMap = useMemo(() => droneDataFiles.reduce((map, dataFile, index) => {
     const droneNumber = index + 1;

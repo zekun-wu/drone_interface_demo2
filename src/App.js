@@ -1,6 +1,7 @@
-import React, { useState, useMemo, useEffect, memo} from 'react';
+import React, { useState, useRef, useEffect, memo} from 'react';
 import Questionnaire from './components/Questionnaire';
 import DroneMonitor from './components/DroneMonitor';
+import End from './components/End';
 import './App.css';
 
 function App() {
@@ -35,7 +36,38 @@ function App() {
     { scene: 5, highlight: 1 },
     'questionnaire',
     { scene: 5, highlight: 2 },
-    'questionnaire'
+    'questionnaire',
+    { scene: 6, highlight: 0 },
+    'questionnaire',
+    { scene: 6, highlight: 1 },
+    'questionnaire',
+    { scene: 6, highlight: 2 },
+    'questionnaire',
+    { scene: 7, highlight: 0 },
+    'questionnaire',
+    { scene: 7, highlight: 1 },
+    'questionnaire',
+    { scene: 7, highlight: 2 },
+    'questionnaire',
+    { scene: 8, highlight: 0 },
+    'questionnaire',
+    { scene: 8, highlight: 1 },
+    'questionnaire',
+    { scene: 8, highlight: 2 },
+    'questionnaire',
+    { scene: 9, highlight: 0 },
+    'questionnaire',
+    { scene: 9, highlight: 1 },
+    'questionnaire',
+    { scene: 9, highlight: 2 },
+    'questionnaire',
+    { scene: 10, highlight: 0 },
+    'questionnaire',
+    { scene: 10, highlight: 1 },
+    'questionnaire',
+    { scene: 10, highlight: 2 },
+    'questionnaire',
+    'end'
     // Add more scene and highlight combinations as needed
   ];
 
@@ -43,6 +75,7 @@ function App() {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [sceneCounter, setSceneCounter] = useState(1);
+  const [results, setResults] = useState([]);
 
   const handleNextScene = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % scenehighlightArray.length);
@@ -51,11 +84,29 @@ function App() {
     }
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Add logic here to process and submit the answers
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   questionnaireRef.current.handleSubmit();
+  //   handleNextScene();
+  // };
+  // const handleSubmit = () => {
+  //   if (questionnaireRef.current) {
+  //     questionnaireRef.current.handleSubmit();
+  //   }
+  //   handleNextScene();
+  // };
+
+  const handleQuestionnaireSubmit = (currentResult) => {
+    setResults((prevResults) => {
+      const updatedResults = [...prevResults, currentResult];
+      console.log("Updated Results:", updatedResults);
+      return updatedResults;
+    });
     handleNextScene();
   };
+
+// Remove the handleResults function
+
 
   // const handlePrevScene = () => {
   //   setCurrentIndex((prevIndex) => (prevIndex === 0) ? scenehighlightArray.length - 1 : prevIndex - 1);
@@ -90,6 +141,8 @@ function App() {
 
   const [droneDataFiles, setDroneDataFiles] = useState(generateDroneDataFiles());
   const [prevScene, setPrevScene] = useState(currentSceneHighlight.scene);
+  const [droneData, setDroneData] = useState({});
+  const questionnaireRef = useRef();
 
   useEffect(() => {
     if (prevScene !== currentSceneHighlight.scene) {
@@ -98,36 +151,64 @@ function App() {
     }
   }, [currentIndex, currentSceneHighlight.scene, prevScene]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const dataPromises = droneDataFiles.map((dataFile) =>
+        fetch(dataFile).then((response) => response.json()));
+
+      const dataResults = await Promise.allSettled(dataPromises);
+      const dataObj = dataResults.reduce((obj, data, index) => {
+        obj[index + 1] = data;
+        return obj;
+      }, {});
+
+      setDroneData(dataObj);
+    };
+
+    fetchData();
+  }, [droneDataFiles]);
 
   return (
     <div className="App">
       <div className="app_container">
         {scenehighlightArray[currentIndex] === 'questionnaire' ? (
-          <Questionnaire handleSubmit={handleSubmit} droneDataFiles={droneDataFiles}/>
+          <Questionnaire
+          ref={questionnaireRef}
+          onSubmit={handleQuestionnaireSubmit}
+          droneDataFiles={droneDataFiles}
+          droneData={droneData}
+          highlight={currentSceneHighlight.highlight}
+          />
+        ) : scenehighlightArray[currentIndex] === 'end' ? (
+          <End results={results} />
         ) : (
           <MemoizedDroneMonitor
             identifier={key}
             scene={currentSceneHighlight.scene}
             highlight={currentSceneHighlight.highlight}
             droneDataFiles={droneDataFiles}
+            droneData={droneData}
           />
         )}
         <div className="content-wrapper">
           <h2>Current Scene: {sceneCounter}</h2>
-          <div className="button-container">
-            {/* <button onClick={handlePrevScene}>Previous Scene</button> */}
-            {scenehighlightArray[currentIndex] === 'questionnaire' ? (
-              <button type="submit" onClick={handleSubmit}>
-                Submit and Proceed
-              </button>
-            ) : (
-              <button onClick={handleNextScene}>Next</button>
-            )}
-          </div>
+          {scenehighlightArray[currentIndex] !== 'end' && (
+            <div className="button-container">
+              {/* <button onClick={handlePrevScene}>Previous Scene</button> */}
+              {scenehighlightArray[currentIndex] === 'questionnaire' ? (
+                <button type="submit" onClick={() => questionnaireRef.current.handleSubmit()}>
+                    Submit and Proceed
+                </button>
+              ) : (
+                <button onClick={handleNextScene}>Next</button>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
+  
 }
 
 export default App;
