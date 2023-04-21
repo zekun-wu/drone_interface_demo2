@@ -20,7 +20,7 @@ import altitudeIcon from './icons/altitude.png';
 import distanceIcon from './icons/distance.png';
 import elapsedIcon from './icons/elapsed.png';
 
-const DroneBlock = ({ droneData, droneNumber, highlightStatus}) => {
+const DroneBlock = ({ droneData, droneNumber, highlightStatus, onTimestampChange, isFrozen}) => {
 
   const [latestData, setLatestData] = useState({});
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -182,23 +182,41 @@ const DroneBlock = ({ droneData, droneNumber, highlightStatus}) => {
     );
   };
 
+  // const handleTimestampChange = (timestampIndex) => {
+  //   setCurrentTimestamp(timestampIndex);
+
+  //   if (timestampIndex === timestamps.length - 1) {
+  //     onDataPlayed(); // Call the onDataPlayed function when the data has been played
+  //   }
+  // };
+
   useEffect(() => {
+    console.log('droneData',droneData)
+    console.log('isFrozen',isFrozen)
+    console.log(droneData && droneData.timestamps && droneData.timestamps.length > 0)
     if (droneData && droneData.timestamps && droneData.timestamps.length > 0) {
+      if (!isFrozen) {
       setLatestData(droneData.timestamps[currentIndex]);
-  
       const timer = setInterval(() => {
         setCurrentIndex((prevIndex) => {
           if (prevIndex + 1 >= droneData.timestamps.length) {
             clearInterval(timer);
+            onTimestampChange(droneNumber, prevIndex + 1); // Call onTimestampChange when the data has been played
             return prevIndex;
           }
           return prevIndex + 1;
         });
       }, (1000 * 40) / droneData.timestamps.length);
-  
+
       return () => clearInterval(timer);
     }
-  }, [droneData, currentIndex]);
+    else{
+      console.log('frozen')
+      console.log(droneData.timestamps[0])
+      setLatestData(droneData.timestamps[0]);
+    }
+  }
+  }, [droneData, currentIndex, onTimestampChange,isFrozen]);
 
   return (
     <div className="drone-block">

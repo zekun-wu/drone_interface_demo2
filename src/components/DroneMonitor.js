@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import DroneBlock from './DroneBlock';
 import './DroneMonitor.css';
 
-const DroneMonitor = ({ identifier, scene, highlight, droneDataFiles, droneData }) => {
+const DroneMonitor = ({ identifier, scene, highlight, droneDataFiles, droneData, onDataPlayed,taskStarted }) => {
 
   // const [droneData, setDroneData] = useState({});
+  const [currentTimestamp, setCurrentTimestamp] = useState(0);
+  const [dataPlayed, setDataPlayed] = useState(false); 
   const droneBlocks = new Array(6).fill(null);
 
   // const normalSceneFiles = [];
@@ -53,6 +55,27 @@ const DroneMonitor = ({ identifier, scene, highlight, droneDataFiles, droneData 
     };
     return map;
   }, {}), [droneDataFiles]);
+
+  const handleTimestampChange = useCallback((droneNumber, timestampIndex) => {
+    setCurrentTimestamp((prevTimestamp) => {
+      if (timestampIndex > prevTimestamp) {
+        return timestampIndex;
+      }
+      return prevTimestamp;
+    });
+
+    const allDataPlayed = Object.values(droneData).every((entry, index) => {
+      if (entry.status === "fulfilled") {
+        return timestampIndex === entry.value.timestamps.length;
+      }
+      return false;
+    });
+    // console.log('allDataPlayed',allDataPlayed)
+    if (allDataPlayed) {
+      onDataPlayed();
+    }
+  }, [droneData,onDataPlayed]);
+  
   
   // console.log('droneNumberDataMap:', droneNumberDataMap);
 
@@ -71,10 +94,12 @@ const DroneMonitor = ({ identifier, scene, highlight, droneDataFiles, droneData 
           <p>Loading...</p>
         ) : (
           droneBlocks.map((_, index) => (
-            <DroneBlock
+           <DroneBlock
               droneData={droneData[String(index + 1)].value}
               droneNumber={index + 1}
               highlightStatus={highlight}
+              onTimestampChange={handleTimestampChange}
+              isFrozen={!taskStarted}
             />
           ))
         )}

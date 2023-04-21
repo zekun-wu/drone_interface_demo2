@@ -77,11 +77,15 @@ function App() {
   const [sceneCounter, setSceneCounter] = useState(1);
   const [results, setResults] = useState([]);
 
+  const [droneDataPlayed, setDroneDataPlayed] = useState(false);
+  const [taskStarted, setTaskStarted] = useState(false);
+
   const handleNextScene = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % scenehighlightArray.length);
     if (scenehighlightArray[currentIndex + 1] !== 'questionnaire') {
       setSceneCounter((prevSceneCounter) => prevSceneCounter + 1);
     }
+    setTaskStarted(false);
   };
 
   // const handleSubmit = (event) => {
@@ -105,6 +109,12 @@ function App() {
     handleNextScene();
   };
 
+  const handleDroneDataPlayed = () => {
+    setDroneDataPlayed(true);
+    console.log('played')
+    handleNextScene()
+  };
+
 // Remove the handleResults function
 
 
@@ -126,12 +136,12 @@ function App() {
       normalSceneFiles.push({ data });
     }
 
-    const criticalSituationFiles = criticalSituationFolders.map(folder => {
-      const fileIndex = Math.floor(Math.random() * 4) + 1;
-      return {
-        data: `${process.env.PUBLIC_URL}/data/critical_situations/${folder}/${fileIndex}/data.json`
-      };
-    });
+  const criticalSituationFiles = criticalSituationFolders.map(folder => {
+    const fileIndex = Math.floor(Math.random() * 4) + 1;
+    return {
+      data: `${process.env.PUBLIC_URL}/data/critical_situations/${folder}/${fileIndex}/data.json`
+    };
+  });
 
     const droneFiles = [...normalSceneFiles, ...criticalSituationFiles];
     droneFiles.sort(() => Math.random() - 0.5);
@@ -171,7 +181,7 @@ function App() {
   return (
     <div className="App">
       <div className="app_container">
-        {scenehighlightArray[currentIndex] === 'questionnaire' ? (
+        {(scenehighlightArray[currentIndex] === 'questionnaire' ) ? (
           <Questionnaire
           ref={questionnaireRef}
           onSubmit={handleQuestionnaireSubmit}
@@ -188,6 +198,8 @@ function App() {
             highlight={currentSceneHighlight.highlight}
             droneDataFiles={droneDataFiles}
             droneData={droneData}
+            onDataPlayed={handleDroneDataPlayed}
+            taskStarted={taskStarted}
           />
         )}
         <div className="content-wrapper">
@@ -200,6 +212,9 @@ function App() {
                     Submit and Proceed
                 </button>
               ) : (
+                !taskStarted? (
+                  <button onClick={() => setTaskStarted(true)}>Start</button>
+                ):
                 <button onClick={handleNextScene}>Next</button>
               )}
             </div>
